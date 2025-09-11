@@ -25,7 +25,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p>
+      <p className="bg-amber-100">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis,
         blanditiis itaque architecto recusandae vero reprehenderit soluta nihil
         quia officia tempore accusantium laboriosam odio odit exercitationem
