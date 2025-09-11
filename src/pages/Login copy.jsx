@@ -12,13 +12,13 @@ function Login() {
   };
 
   return (
-    <div className="flex h-dvh overflow-hidden">
-      {/* left */}
-      <div className="w-1/2 flex flex-col  items-center text-center">
-        <h1 className="text-4xl font-extrabold text-[#56ACBD] pt-20">
-          ADMIN ACCOUNT
-        </h1>
-        <div className="bg-gradient-to-bl w-170 from-[#40DBFA] to-[#A0A2A3]/40 items-end shadow-xl p-15 pr-10 flex flex-col rounded-4xl gap-2 mt-20">
+    <div className="bg-[#56ACBD] w-full h-screen flex justify-between overflow-hidden">
+      {/* LEFT SIDE */}
+      <div className="bg-white w-1/2 h-screen flex flex-col justify-center items-center">
+        <div className="font-extrabold text-5xl pb-10 text-[#56ACBD]">
+          <h1>ADMIN ACCOUNT</h1>
+        </div>
+        <div className="bg-gradient-to-bl w-170 from-[#40DBFA] to-[#A0A2A3]/40 items-end shadow-xl p-15 pr-10 flex flex-col rounded-4xl gap-2">
           <h1 className="font-semibold text-[36px] w-120 text-right pb-5">
             USE THIS ACCOUNT TO LOGIN AS ADMIN
           </h1>
@@ -64,16 +64,14 @@ function Login() {
         </div>
       </div>
 
-      {/* right */}
-      <div className="w-1/2 bg-[#56ACBD] flex flex-col items-center text-center">
-        {/* TITLE */}
-        <h1 className="text-4xl font-extrabold text-white pt-20">
-          SYSTEM AUTHENTICATION MANAGEMENT
-        </h1>
-        {/* BOX  */}
-        <div className="bg-white/10 backdrop-blur-md items-center shadow-xl flex w-[535px] h-[373px] flex-col rounded-4xl mt-10 pt-5">
-          <h1 className="text-2xl font-extrabold text-white pb-10">LOGIN</h1>
-          <form className="flex flex-col justify-center item gap-10">
+      {/* RIGHT SIDE */}
+      <div className="bg-[#56ACBD] w-1/2 h-screen flex justify-center items-center flex-col">
+        <div className="text-white text-4xl font-extrabold w-150 text-center mb-10">
+          <h1>SYSTEM AUTHENTICATION MANAGEMENT</h1>
+        </div>
+        <div className="bg-white/10 backdrop-blur-md items-center shadow-xl p-20 flex flex-col rounded-4xl">
+          <h1 className="text-2xl font-bold text-white mb-5">LOGIN</h1>
+          <form className="flex flex-col justify-center item gap-5 mt-5">
             <input
               type="text"
               placeholder="Email"
