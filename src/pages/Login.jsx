@@ -1,20 +1,15 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
-import { IoCopy } from "react-icons/io5";
+import CopyField from "../components/CopyField";
+import LoginForm from "../components/LoginForm";
 
 function Login() {
   const [email] = useState("suga@mail.com");
   const [password] = useState("suganteng");
 
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied!");
-  };
-
   return (
     <div className="flex h-dvh overflow-hidden">
       {/* left */}
-      <div className="w-1/2 flex flex-col  items-center text-center">
+      <div className="w-1/2 flex flex-col items-center text-center">
         <h1 className="text-4xl font-extrabold text-[#56ACBD] pt-20">
           ADMIN ACCOUNT
         </h1>
@@ -24,32 +19,9 @@ function Login() {
           </h1>
 
           {/* EMAIL */}
-          <div className="bg-[#56ACBD]/70 w-90 shadow-lg font-bold p-3 flex justify-between items-center">
-            <input
-              value={email}
-              disabled
-              className="bg-transparent outline-none"
-            />
-            <button
-              onClick={() => handleCopy(email)}
-              className="cursor-pointer">
-              <IoCopy size={20} />
-            </button>
-          </div>
-
+          <CopyField value={email} />
           {/* PASSWORD */}
-          <div className="bg-[#56ACBD]/70 w-90 shadow-lg font-bold p-3 flex justify-between items-center">
-            <input
-              value={password}
-              disabled
-              className="bg-transparent outline-none"
-            />
-            <button
-              onClick={() => handleCopy(password)}
-              className="cursor-pointer">
-              <IoCopy size={20} />
-            </button>
-          </div>
+          <CopyField value={password} />
 
           <div className="text-[10px] pt-2">
             <p className="text-[#980202]">
@@ -70,27 +42,10 @@ function Login() {
         <h1 className="text-4xl font-extrabold text-white pt-20">
           SYSTEM AUTHENTICATION MANAGEMENT
         </h1>
-        {/* BOX  */}
+        {/* BOX */}
         <div className="bg-white/10 backdrop-blur-md items-center shadow-xl flex w-[535px] h-[373px] flex-col rounded-4xl mt-10 pt-5">
           <h1 className="text-2xl font-extrabold text-white pb-10">LOGIN</h1>
-          <form className="flex flex-col justify-center item gap-10">
-            <input
-              type="text"
-              placeholder="Email"
-              className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
-            />
-            <button
-              className="bg-gradient-to-b from-[#7191E6] to-[#3D52A1]
-             hover:from-[#365CC1] hover:to-[#071C6D]
-             text-white p-2 rounded-md cursor-pointer">
-              Login
-            </button>
-          </form>
+          <LoginForm />
           <p className="pt-5 text-white">
             Don't have account?{" "}
             <a

@@ -1,10 +1,11 @@
 import { Toaster } from "react-hot-toast";
-import Login from "./pages/Login";
+import AppRouter from "./routes/AppRouter";
+import { AuthProvider } from "./context/AuthProvider";
 
 function App() {
   return (
-    <>
-      <Login />;
+    <AuthProvider>
+      <AppRouter />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -22,7 +23,7 @@ function App() {
           },
         }}
       />
-    </>
+    </AuthProvider>
   );
 }
 
