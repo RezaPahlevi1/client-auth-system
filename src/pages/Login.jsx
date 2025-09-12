@@ -26,9 +26,7 @@ function Login() {
           <div className="text-[10px] pt-2">
             <p className="text-[#980202]">
               IF YOU WANT TO LOGIN AS USER{" "}
-              <a
-                href="#"
-                className="text-[#0000FF] font-semibold">
+              <a href="#" className="text-[#0000FF] font-semibold">
                 CLICK HERE
               </a>
             </p>
@@ -39,7 +37,7 @@ function Login() {
       {/* right */}
       <div className="w-1/2 bg-[#56ACBD] flex flex-col items-center text-center">
         {/* TITLE */}
-        <h1 className="text-4xl font-extrabold text-white pt-20">
+        <h1 className="text-4xl w-150 font-extrabold text-white pt-20">
           SYSTEM AUTHENTICATION MANAGEMENT
         </h1>
         {/* BOX */}
@@ -48,9 +46,7 @@ function Login() {
           <LoginForm />
           <p className="pt-5 text-white">
             Don't have account?{" "}
-            <a
-              href="#"
-              className="font-bold text-[#0000FF]">
+            <a href="/signup" className="font-bold text-[#0000FF]">
               Register
             </a>
           </p>

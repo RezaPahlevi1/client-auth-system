@@ -4,7 +4,7 @@ import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-export default function LoginForm() {
+export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
@@ -37,18 +37,26 @@ export default function LoginForm() {
         className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
       />
       <input
+        type="text"
+        placeholder="Username"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
+      />
+      <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
       />
+
       <button
         type="submit"
         className="bg-gradient-to-b from-[#7191E6] to-[#3D52A1]
        hover:from-[#365CC1] hover:to-[#071C6D]
        text-white p-2 rounded-md cursor-pointer font-bold">
-        Login
+        Register
       </button>
     </form>
   );
