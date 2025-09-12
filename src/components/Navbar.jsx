@@ -9,7 +9,7 @@ function Navbar() {
       <div className="">
         <h1>Halo {user.username}</h1>
       </div>
-      <div className="uppercase">{user.role} DASHBOARD</div>
+      <div className="uppercase text-2xl">{user.role} DASHBOARD</div>
       <div className="">
         <LogoutButton />
       </div>
