@@ -123,9 +123,7 @@ function AdminTable() {
               <th className="px-6 py-3 text-left text-sm font-bold text-black">
                 Status
               </th>
-              <th className="px-6 py-3 text-center text-sm font-bold text-black">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-center text-sm font-bold text-black"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
