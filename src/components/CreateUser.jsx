@@ -2,9 +2,8 @@ import React from "react";
 import { FaCheck } from "react-icons/fa6";
 import { RxReset } from "react-icons/rx";
 
-const Modaledit = ({ isOpen, onClose, user }) => {
+const CreateUser = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-  if (!isOpen || !user) return null;
   const handleOutsideClick = (e) => {
     if (e.target.id === "modal-overlay") {
       onClose(); // close modal kalau klik luar
@@ -21,13 +20,12 @@ const Modaledit = ({ isOpen, onClose, user }) => {
         className="bg-white p-6 rounded-2xl shadow-lg"
         onClick={(e) => e.stopPropagation()}>
         <div className="p-2.5 w-[635px] h-[500px] text-center text-xl font-bold">
-          EDIT CONTENT
+          CREATE USER
           <div className="p-2 text-left grid items-center gap-2">
             Username
             <input
               type="text"
               className="border-2 px-2 py-1"
-              placeholder={user.username}
             />
           </div>
           <div className="p-2 text-left grid items-center gap-2">
@@ -35,34 +33,7 @@ const Modaledit = ({ isOpen, onClose, user }) => {
             <input
               type="email"
               className="border-2 px-2 py-1"
-              placeholder={user.email}
             />
-          </div>
-          <div className="p-2 text-left grid items-center gap-2 mb-4">
-            Role
-            <select
-              className="border-2 px-2 py-1 bg-white"
-              value={user.role} // ini yang bikin default sesuai data user
-              // onChange={(e) => setUser({ ...user, role: e.target.value })} // opsional kalau mau bisa diganti
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div className="p-2 text-left grid items-center gap-2 mb-4">
-            Status
-            {/* <select className="border-2 px-2 py-1 bg-white">
-              <option value="">Active</option>
-              <option value="">Inactive</option>
-            </select> */}
-            <select
-              className="border-2 px-2 py-1 bg-white"
-              value={user.status} // ini yang bikin default sesuai data user
-              // onChange={(e) => setUser({ ...user, role: e.target.value })} // opsional kalau mau bisa diganti
-            >
-              <option value="active">active</option>
-              <option value="inactive">inactive</option>
-            </select>
           </div>
         </div>
         <div className="flex gap-2 pl-4">
@@ -82,4 +53,4 @@ const Modaledit = ({ isOpen, onClose, user }) => {
   );
 };
 
-export default Modaledit;
+export default CreateUser;
