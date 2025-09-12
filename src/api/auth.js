@@ -5,7 +5,7 @@ export const loginApi = async (email, password) => {
   if (email === "suga@mail.com" && password === "suganteng") {
     return { email, username: "sugay", role: "admin" };
   } else if (email === "user@mail.com" && password === "userganteng") {
-    return { email, role: "user" };
+    return { email, username: "afdahl keren", role: "user" };
   } else {
     throw new Error("Invalid credentials");
   }
