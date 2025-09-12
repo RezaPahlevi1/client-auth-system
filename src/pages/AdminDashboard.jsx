@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import useAuth from "../hooks/useAuth";
 import { MdOutlinePerson } from "react-icons/md";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 function AdminDashboard() {
   const { user } = useAuth();
@@ -27,13 +28,16 @@ function AdminDashboard() {
             </button>
           </div>
           <div className="flex flex-row gap-5">
-            <select
-              placeholder="Sort By"
-              className="p-3 bg-[#56acbd] cursor-pointer rounded-4xl text-white w-35"
-            >
-              <option className="p-10">Role</option>
-              <option>Alphabet</option>
-            </select>
+            <div className="relative w-35">
+              <select className="appearance-none p-3 pr-8 bg-[#56acbd] cursor-pointer rounded-3xl text-white w-full">
+                <option>Role</option>
+                <option>Alphabet</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-3xl text-white pointer-events-none">
+                <RiArrowDropDownLine />
+              </div>
+            </div>
+
             <input
               placeholder="Search..."
               className="bg-white p-3 inset-shadow-sm/40 rounded-4xl w-120"
