@@ -25,41 +25,5 @@ export const fetchAllUsers = async () => {
       role: "user",
       status: "active",
     },
-    {
-      email: "user@mail.com",
-      username: "budi",
-      role: "user",
-      status: "active",
-    },
-    {
-      email: "user@mail.com",
-      username: "budi",
-      role: "user",
-      status: "active",
-    },
-    {
-      email: "user@mail.com",
-      username: "budi",
-      role: "user",
-      status: "active",
-    },
-    {
-      email: "user@mail.com",
-      username: "budi",
-      role: "user",
-      status: "active",
-    },
-    {
-      email: "user@mail.com",
-      username: "budi",
-      role: "user",
-      status: "active",
-    },
-    {
-      email: "user@mail.com",
-      username: "budianto",
-      role: "user",
-      status: "inactive",
-    },
   ];
 };

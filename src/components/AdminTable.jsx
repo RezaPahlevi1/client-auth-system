@@ -1,6 +1,3 @@
-// import React from "react";
-// import { MdOutlinePerson } from "react-icons/md";
-// import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
@@ -21,8 +18,12 @@ function AdminTable() {
 
     loadUsers();
   }, []);
+
+  // Hitung sisa baris kosong
+  const emptyRows = Math.max(0, 5 - users.length);
+
   return (
-    <table className="min-w-full border border-gray-200 divide-y divide-gray-200 bg-white shadow rounded-lg">
+    <table className="min-w-full border table-fixed border-gray-200 divide-y divide-gray-200 bg-white shadow rounded-lg">
       <thead className="bg-gray-50">
         <tr>
           <th className="px-6 py-3 text-left text-sm font-bold text-black">
@@ -41,14 +42,17 @@ function AdminTable() {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
+        {/* Render user data */}
         {users.map((user) => (
           <tr
             key={user.id}
             className="hover:bg-gray-50">
-            <td className="px-6 py-4 text-sm font-medium text-gray-900">
+            <td className="px-6 py-4 h-16 text-sm font-medium text-gray-900">
               {user.username}
             </td>
-            <td className="px-6 py-4 text-sm text-gray-600">{user.email}</td>
+            <td className="px-6 py-4 h-16 text-sm text-gray-600">
+              {user.email}
+            </td>
             <td className="px-6 py-4">
               <div
                 className={`p-2 w-20 text-center rounded-full text-xs font-semibold ${
@@ -59,7 +63,7 @@ function AdminTable() {
                 {user.role}
               </div>
             </td>
-            <td className="px-6 py-4">
+            <td className="px-6 py-4 h-16">
               <div
                 className={`p-2 w-20 text-center rounded-full text-xs font-semibold ${
                   user.status.toLowerCase() === "active"
@@ -69,7 +73,7 @@ function AdminTable() {
                 {user.status}
               </div>
             </td>
-            <td className="px-6 py-4 flex gap-2 justify-center">
+            <td className="px-6 py-4 h-16 flex gap-2 justify-center">
               <button className="p-2 bg-[#F5FB87] cursor-pointer hover:bg-yellow-400 rounded">
                 <MdOutlineEdit />
               </button>
@@ -77,6 +81,19 @@ function AdminTable() {
                 <FaTrashAlt />
               </button>
             </td>
+          </tr>
+        ))}
+
+        {/* Render baris kosong jika kurang dari 5 */}
+        {[...Array(emptyRows)].map((_, i) => (
+          <tr
+            key={`empty-${i}`}
+            className="hover:bg-gray-50">
+            <td className="px-6 py-4 h-16 text-xl text-black font-extrabold "></td>
+            <td className="px-6 py-4 h-16 text-xl text-black font-extrabold"></td>
+            <td className="px-6 py-4 h-16 text-xl text-black font-extrabold"></td>
+            <td className="px-6 py-4 h-16 text-xl text-black font-extrabold"></td>
+            <td className="px-6 py-4 h-16 text-xl text-black font-extrabold text-center"></td>
           </tr>
         ))}
       </tbody>
