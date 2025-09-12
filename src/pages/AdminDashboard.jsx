@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import useAuth from "../hooks/useAuth";
 
 function AdminDashboard() {
@@ -5,6 +6,7 @@ function AdminDashboard() {
 
   return (
     <h1>
+      <Navbar />
       email {user.email}, role lu {user.role}
     </h1>
   );

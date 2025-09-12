@@ -7,18 +7,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<Login />}
-        />
-        <Route
-          path="/dashboard-admin"
-          element={<AdminDashboard />}
-        />
-        <Route
-          path="/dashboard-user"
-          element={<UserDashboard />}
-        />
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard-admin" element={<AdminDashboard />} />
+        <Route path="/dashboard-user" element={<UserDashboard />} />
       </Routes>
     </BrowserRouter>
   );
