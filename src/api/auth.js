@@ -57,9 +57,9 @@ export const fetchAllUsers = async () => {
     },
     {
       email: "user@mail.com",
-      username: "budi",
+      username: "budianto",
       role: "user",
-      status: "active",
+      status: "inactive",
     },
   ];
 };
