@@ -17,7 +17,7 @@ function LogoutButton() {
     <div>
       <button
         onClick={handleLogout}
-        className="bg-[#E62727] flex flex-row justify-center items-center gap-2 p-3 px-4 rounded-lg cursor-pointer"
+        className="bg-[#FF4A4A] hover:bg-[#E62727] flex flex-row justify-center items-center gap-2 p-3 px-4 rounded-lg cursor-pointer"
       >
         <MdOutlineLogout />
         Logout

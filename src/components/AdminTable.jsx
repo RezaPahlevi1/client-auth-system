@@ -1,6 +1,8 @@
 import React from "react";
 import { MdOutlinePerson } from "react-icons/md";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { FaTrashAlt } from "react-icons/fa";
+import { MdOutlineEdit } from "react-icons/md";
 
 function AdminTable() {
   const users = [
@@ -56,9 +58,7 @@ function AdminTable() {
           <th className="px-6 py-3 text-left text-sm font-bold text-black">
             Status
           </th>
-          <th className="px-6 py-3 text-center text-sm font-bold text-black">
-            Actions
-          </th>
+          <th className="px-6 py-3 text-center text-sm font-bold text-black"></th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -92,10 +92,10 @@ function AdminTable() {
             </td>
             <td className="px-6 py-4 flex gap-2 justify-center">
               <button className="p-2 bg-[#F5FB87] cursor-pointer hover:bg-yellow-400 rounded">
-                ✏️
+                <MdOutlineEdit />
               </button>
-              <button className="p-2 bg-[#FF4A4A] cursor-pointer hover:bg-red-600 text-white rounded">
-                🗑️
+              <button className="p-2 bg-[#FF4A4A] cursor-pointer hover:bg-red-600 text-black rounded">
+                <FaTrashAlt />
               </button>
             </td>
           </tr>
