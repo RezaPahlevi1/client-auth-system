@@ -1,4 +1,5 @@
 // dummy
+
 export const loginApi = async (email, password) => {
   // Dummy admin & user
   if (email === "suga@mail.com" && password === "suganteng") {
@@ -8,4 +9,57 @@ export const loginApi = async (email, password) => {
   } else {
     throw new Error("Invalid credentials");
   }
+};
+
+export const fetchAllUsers = async () => {
+  return [
+    {
+      email: "suga@mail.com",
+      username: "sugay",
+      role: "admin",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+    {
+      email: "user@mail.com",
+      username: "budi",
+      role: "user",
+      status: "active",
+    },
+  ];
 };

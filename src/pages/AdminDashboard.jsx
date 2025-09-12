@@ -1,12 +1,12 @@
 import AdminTable from "../components/AdminTable";
 import Navbar from "../components/Navbar";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import { MdOutlinePerson } from "react-icons/md";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 function AdminDashboard() {
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   return (
     <div>
