@@ -1,7 +1,7 @@
 // context/AuthProvider.jsx
 import { useState, useEffect } from "react";
 import AuthContext from "./AuthContext";
-import { loginApi, logoutApi } from "../api/auth";
+import { loginApi, logoutApi, signupApi } from "../api/auth";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
             username: data.username,
             email: data.email,
             role: data.role,
+            status: data.status,
           });
         }
       } catch (err) {
@@ -42,6 +43,13 @@ export function AuthProvider({ children }) {
     return userData; // tambahkan return
   };
 
+  const signup = async (username, email, password) => {
+    const userData = await signupApi(username, email, password);
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+    return userData;
+  };
+
   const logout = async () => {
     try {
       await logoutApi(); // hapus cookie di backend
@@ -53,7 +61,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

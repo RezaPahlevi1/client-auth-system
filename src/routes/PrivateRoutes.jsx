@@ -1,7 +1,7 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-function PrivateRoute({ children, role }) {
+function PrivateRoute({ role }) {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -26,7 +26,7 @@ function PrivateRoute({ children, role }) {
     );
   }
 
-  return children;
+  return <Outlet />;
 }
 
 export default PrivateRoute;

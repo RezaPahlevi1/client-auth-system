@@ -1,5 +1,4 @@
-// dummy
-
+// logiApi
 export const loginApi = async (email, password) => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signin`, {
     method: "POST",
@@ -19,12 +18,32 @@ export const loginApi = async (email, password) => {
   return data.user; // backend sudah return { user: {...} }
 };
 
+// logoutApi
 export const logoutApi = async () => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`, {
     method: "POST",
     credentials: "include",
   });
   if (!res.ok) throw new Error("Logout failed");
+};
+
+// register
+export const signupApi = async (username, email, password) => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, email, password }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || "Signup failed");
+  }
+
+  const data = await res.json();
+  return data.user; // backend return { user: ... }
 };
 
 export const fetchAllUsers = async () => {
