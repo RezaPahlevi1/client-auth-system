@@ -1,6 +1,5 @@
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -13,8 +12,7 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await loginApi(email, password);
-      login(userData);
+      const userData = await login(email, password);
       toast.success("Login successful!");
 
       if (userData.role === "admin") {
@@ -28,7 +26,9 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-10">
       <input
         type="text"
         placeholder="Email"
