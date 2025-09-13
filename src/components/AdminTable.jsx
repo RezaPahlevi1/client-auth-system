@@ -6,7 +6,7 @@ import { fetchAllUsers } from "../api/auth";
 import Modaledit from "../components/Modaledit";
 import ConfirmDeleteModal from "../components/ModalDelete";
 
-function AdminTable() {
+function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -54,13 +54,42 @@ function AdminTable() {
     const loadUsers = async () => {
       try {
         const data = await fetchAllUsers();
-        setUsers(data);
+
+        // 🔍 Filtering
+        let filtered = data.filter((u) => {
+          const matchSearch =
+            u.username.toLowerCase().includes(search.toLowerCase()) ||
+            u.email.toLowerCase().includes(search.toLowerCase());
+          const matchRole = roleFilter
+            ? u.role.toLowerCase() === roleFilter.toLowerCase()
+            : true;
+          const matchStatus = statusFilter
+            ? u.status.toLowerCase() === statusFilter.toLowerCase()
+            : true;
+
+          return matchSearch && matchRole && matchStatus;
+        });
+
+        // ↕️ Sorting
+        if (sortBy === "username") {
+          filtered = [...filtered].sort((a, b) =>
+            a.username.localeCompare(b.username)
+          );
+        } else if (sortBy === "role") {
+          filtered = [...filtered].sort((a, b) => a.role.localeCompare(b.role));
+        } else if (sortBy === "status") {
+          filtered = [...filtered].sort((a, b) =>
+            a.status.localeCompare(b.status)
+          );
+        }
+
+        setUsers(filtered);
       } catch (error) {
         console.error("Gagal ambil data users", error);
       }
     };
     loadUsers();
-  }, []);
+  }, [search, sortBy, roleFilter, statusFilter]);
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -89,10 +118,10 @@ function AdminTable() {
         <table className="min-w-full border table-fixed border-gray-200 divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-bold text-black">
+              <th className="px-6 py-3 w-50 text-left text-sm font-bold text-black">
                 Username
               </th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-black">
+              <th className="px-6 py-3 w-100 text-left text-sm font-bold text-black">
                 Email
               </th>
               <th className="px-6 py-3 text-left text-sm font-bold text-black">
@@ -106,9 +135,7 @@ function AdminTable() {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {currentUsers.map((user) => (
-              <tr
-                key={user.id}
-                className="hover:bg-gray-50">
+              <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 h-16 text-sm font-medium text-gray-900">
                   {user.username}
                 </td>
@@ -121,7 +148,8 @@ function AdminTable() {
                       user.role.toLowerCase() === "admin"
                         ? "bg-[#3b82f6] text-white"
                         : "bg-[#f4a261] text-white"
-                    }`}>
+                    }`}
+                  >
                     {user.role}
                   </div>
                 </td>
@@ -131,19 +159,22 @@ function AdminTable() {
                       user.status.toLowerCase() === "active"
                         ? "bg-[#06D6A0] text-white"
                         : "bg-[#e63946] text-white"
-                    }`}>
+                    }`}
+                  >
                     {user.status}
                   </div>
                 </td>
                 <td className="px-6 py-4 h-16 flex gap-2 justify-center">
                   <button
                     onClick={() => handleEditClick(user)}
-                    className="p-2 bg-yellow-200 cursor-pointer hover:bg-yellow-400 rounded transition-colors">
+                    className="p-2 bg-yellow-200 cursor-pointer hover:bg-yellow-400 rounded transition-colors"
+                  >
                     <MdOutlineEdit />
                   </button>
                   <button
                     onClick={() => handleDeleteClick(user)}
-                    className="p-2 bg-red-400 cursor-pointer hover:bg-red-600 text-white rounded transition-colors">
+                    className="p-2 bg-red-400 cursor-pointer hover:bg-red-600 text-white rounded transition-colors"
+                  >
                     <FaTrashAlt />
                   </button>
                 </td>
@@ -151,12 +182,8 @@ function AdminTable() {
             ))}
 
             {[...Array(emptyRows)].map((_, i) => (
-              <tr
-                key={`empty-${i}`}
-                className="hover:bg-gray-50">
-                <td
-                  colSpan={5}
-                  className="px-6 py-4 h-16"></td>
+              <tr key={`empty-${i}`} className="hover:bg-gray-50">
+                <td colSpan={5} className="px-6 py-4 h-16"></td>
               </tr>
             ))}
           </tbody>
@@ -167,11 +194,13 @@ function AdminTable() {
       <div className="flex items-center justify-center px-4 py-3 bg-gray-100 border-t border-gray-200">
         <nav
           className="relative z-0 inline-flex items-center space-x-2"
-          aria-label="Pagination">
+          aria-label="Pagination"
+        >
           <button
             onClick={goToPrevPage}
             disabled={currentPage === 1}
-            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed">
+            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed"
+          >
             <MdChevronLeft className="h-5 w-5" />
           </button>
           {getPageNumbers().map((page, index) => (
@@ -185,7 +214,8 @@ function AdminTable() {
                     currentPage === page
                       ? "text-black font-bold"
                       : "text-gray-500 hover:text-black"
-                  }`}>
+                  }`}
+                >
                   {page}
                 </button>
               )}
@@ -194,7 +224,8 @@ function AdminTable() {
           <button
             onClick={goToNextPage}
             disabled={currentPage === totalPages}
-            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed">
+            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed"
+          >
             <MdChevronRight className="h-5 w-5" />
           </button>
         </nav>
