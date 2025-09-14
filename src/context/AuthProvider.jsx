@@ -6,6 +6,7 @@ import { loginApi, logoutApi, signupApi } from "../api/auth";
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -37,10 +38,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const userData = await loginApi(email, password);
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    return userData; // tambahkan return
+    try {
+      setAuthLoading(true);
+      const userData = await loginApi(email, password);
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const signup = async (username, email, password) => {
@@ -61,7 +67,8 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, login, signup, logout, loading, authLoading }}>
       {children}
     </AuthContext.Provider>
   );

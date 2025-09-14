@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { RxReset } from "react-icons/rx";
+import { updateUserByAdminApi } from "../api/admin";
+import toast from "react-hot-toast";
 
-const Modaledit = ({ isOpen, onClose, user }) => {
-  if (!isOpen) return null;
+const ModalEdit = ({ isOpen, onClose, user, reloadUsers }) => {
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    role: "",
+    status: "",
+  });
+
+  useEffect(() => {
+    if (user) {
+      setForm({
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        status: user.status,
+      });
+    }
+  }, [user]);
+
   if (!isOpen || !user) return null;
-  const handleOutsideClick = (e) => {
-    if (e.target.id === "modal-overlay") {
-      onClose(); // close modal kalau klik luar
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleReset = () => {
+    if (user) {
+      setForm({
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        status: user.status,
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await updateUserByAdminApi(user.id, form);
+      toast.success("User updated successfully");
+      onClose();
+      if (reloadUsers) await reloadUsers();
+    } catch (err) {
+      toast.error(err.message || "Failed to update user");
     }
   };
 
@@ -15,8 +55,7 @@ const Modaledit = ({ isOpen, onClose, user }) => {
     <div
       id="modal-overlay"
       className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-      onClick={handleOutsideClick}>
-      {/* stopPropagation agar klik dalam modal tidak menutup */}
+      onClick={(e) => e.target.id === "modal-overlay" && onClose()}>
       <div
         className="bg-white p-6 rounded-2xl shadow-lg"
         onClick={(e) => e.stopPropagation()}>
@@ -25,41 +64,41 @@ const Modaledit = ({ isOpen, onClose, user }) => {
           <div className="p-2 text-left grid items-center gap-2">
             Username
             <input
+              name="username"
+              value={form.username}
+              onChange={handleChange}
               type="text"
               className="border-2 px-2 py-1"
-              placeholder={user.username}
             />
           </div>
           <div className="p-2 text-left grid items-center gap-2">
             Email
             <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
               type="email"
               className="border-2 px-2 py-1"
-              placeholder={user.email}
             />
           </div>
           <div className="p-2 text-left grid items-center gap-2 mb-4">
             Role
             <select
-              className="border-2 px-2 py-1 bg-white"
-              value={user.role} // ini yang bikin default sesuai data user
-              // onChange={(e) => setUser({ ...user, role: e.target.value })} // opsional kalau mau bisa diganti
-            >
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              className="border-2 px-2 py-1 bg-white">
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
           </div>
           <div className="p-2 text-left grid items-center gap-2 mb-4">
             Status
-            {/* <select className="border-2 px-2 py-1 bg-white">
-              <option value="">Active</option>
-              <option value="">Inactive</option>
-            </select> */}
             <select
-              className="border-2 px-2 py-1 bg-white"
-              value={user.status} // ini yang bikin default sesuai data user
-              // onChange={(e) => setUser({ ...user, role: e.target.value })} // opsional kalau mau bisa diganti
-            >
+              name="status"
+              value={form.status}
+              onChange={handleChange}
+              className="border-2 px-2 py-1 bg-white">
               <option value="active">active</option>
               <option value="inactive">inactive</option>
             </select>
@@ -68,11 +107,13 @@ const Modaledit = ({ isOpen, onClose, user }) => {
         <div className="flex gap-2 pl-4">
           <button
             type="button"
+            onClick={handleReset}
             className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-red-300 hover:bg-red-400 rounded">
             <RxReset /> Reset
           </button>
           <button
             type="button"
+            onClick={handleSubmit}
             className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-yellow-300 hover:bg-yellow-400 rounded">
             <FaCheck /> Submit
           </button>
@@ -82,4 +123,4 @@ const Modaledit = ({ isOpen, onClose, user }) => {
   );
 };
 
-export default Modaledit;
+export default ModalEdit;

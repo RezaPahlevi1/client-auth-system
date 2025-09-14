@@ -1,12 +1,14 @@
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import useAuth from "../hooks/useAuth";
+import Spinner from "../components/Spinner";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, authLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -44,11 +46,12 @@ export default function LoginForm() {
         className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
       />
       <button
+        disabled={authLoading}
         type="submit"
         className="bg-gradient-to-b from-[#7191E6] to-[#3D52A1]
        hover:from-[#365CC1] hover:to-[#071C6D]
        text-white p-2 rounded-md cursor-pointer font-bold">
-        Login
+        {authLoading ? <Spinner /> : "Login"}
       </button>
     </form>
   );
