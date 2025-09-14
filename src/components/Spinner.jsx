@@ -1,7 +1,12 @@
+import Raja from "/raja.png";
 function Spinner() {
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-6 h-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+    <div className="flex flex-col justify-center items-center content-center h-screen">
+      <img
+        src={Raja}
+        alt=""
+        className="w-70 h-100  animate-spin"
+      />
     </div>
   );
 }
