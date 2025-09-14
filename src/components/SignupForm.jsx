@@ -13,14 +13,9 @@ export default function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await signup(username, email, password);
+      await signup(username, email, password);
       toast.success("Signup successful!");
-
-      if (userData.role === "admin") {
-        navigate("/dashboard-admin");
-      } else {
-        navigate("/dashboard-user");
-      }
+      navigate("/"); // langsung ke /
     } catch (err) {
       toast.error(err.message);
     }
