@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import useAuth from "../hooks/useAuth";
-import Spinner from "../components/Spinner";
+import SpinnerButton from "./SpinnerButton";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -51,7 +51,7 @@ export default function LoginForm() {
         className="bg-gradient-to-b from-[#7191E6] to-[#3D52A1]
        hover:from-[#365CC1] hover:to-[#071C6D]
        text-white p-2 rounded-md cursor-pointer font-bold">
-        {authLoading ? <Spinner /> : "Login"}
+        {authLoading ? <SpinnerButton /> : "Login"}
       </button>
     </form>
   );
