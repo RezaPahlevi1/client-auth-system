@@ -1,36 +1,32 @@
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export default function SignupForm() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await loginApi(email, password);
-      login(userData);
-      toast.success("Login successful!");
-
-      if (userData.role === "admin") {
-        navigate("/dashboard-admin");
-      } else {
-        navigate("/dashboard-user");
-      }
+      await signup(username, email, password);
+      toast.success("Signup successful!");
+      navigate("/"); // langsung ke /
     } catch (err) {
       toast.error(err.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-10">
       <input
-        type="text"
+        type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -39,8 +35,8 @@ export default function SignupForm() {
       <input
         type="text"
         placeholder="Username"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
       />
       <input

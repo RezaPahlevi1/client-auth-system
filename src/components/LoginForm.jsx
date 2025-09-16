@@ -1,20 +1,20 @@
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
-import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import useAuth from "../hooks/useAuth";
+import SpinnerButton from "./SpinnerButton";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, authLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await loginApi(email, password);
-      login(userData);
+      const userData = await login(email, password);
       toast.success("Login successful!");
 
       if (userData.role === "admin") {
@@ -28,7 +28,9 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-10">
       <input
         type="text"
         placeholder="Email"
@@ -44,11 +46,12 @@ export default function LoginForm() {
         className="p-3 rounded-3xl bg-white inset-shadow-sm/30 w-100"
       />
       <button
+        disabled={authLoading}
         type="submit"
         className="bg-gradient-to-b from-[#7191E6] to-[#3D52A1]
        hover:from-[#365CC1] hover:to-[#071C6D]
        text-white p-2 rounded-md cursor-pointer font-bold">
-        Login
+        {authLoading ? <SpinnerButton /> : "Login"}
       </button>
     </form>
   );

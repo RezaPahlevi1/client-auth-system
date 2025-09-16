@@ -1,16 +1,12 @@
 import React from "react";
 
-const ConfirmDeleteModal = ({ isOpen, onClose, user }) => {
+const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm, user }) => {
   if (!isOpen) return null;
 
   const handleOutsideClick = (e) => {
     if (e.target.id === "modal-overlay") {
       onClose(); // close modal kalau klik luar
     }
-  };
-
-  const cancelButton = () => {
-    onClose();
   };
 
   return (
@@ -24,19 +20,19 @@ const ConfirmDeleteModal = ({ isOpen, onClose, user }) => {
         <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
         <p className="mb-6 text-gray-600">
           Are you sure you want to delete{" "}
-          <span className="font-semibold text-red-500">{user?.username}</span>{" "}
-          <p>?</p>
+          <span className="font-semibold text-red-500">{user?.username}</span>?
         </p>
         <div className="flex justify-center gap-4">
           <button
             className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
             type="button"
-            onClick={cancelButton}>
+            onClick={onClose}>
             Cancel
           </button>
           <button
             className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white"
-            type="button">
+            type="button"
+            onClick={onConfirm}>
             Confirm
           </button>
         </div>

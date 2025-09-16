@@ -2,20 +2,46 @@ import { IoPersonSharp } from "react-icons/io5";
 
 import Navbar from "../components/Navbar";
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import useUser from "../hooks/useUser";
 
 function UserDashboard() {
+  const { user, updateUser, loading } = useUser();
   const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({ username: "", email: "" });
 
-  const { user } = useAuth();
-
-  const testing = () => {
-    toast.success("Edit succeeded!");
+  const handleSubmit = async () => {
+    if (!formData.username && !formData.email) {
+      toast.error("No changes made");
+      return;
+    }
+    try {
+      await updateUser(user.id, formData);
+      toast.success("Profile updated!");
+      setIsEditing(false);
+      // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+      toast.error("Update failed");
+    }
     setTimeout(() => {
       window.location.reload();
-    }, 1000); // reload setelah 2 detik
+    }, 1000);
   };
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+    if (!isEditing) {
+      // baru masuk edit mode, sync dengan user
+      setFormData({ username: user.username, email: user.email });
+    } else {
+      // keluar edit mode, reset
+      setFormData({ username: "", email: "" });
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <p>No user data</p>;
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -35,7 +61,8 @@ function UserDashboard() {
           <div className="flex justify-between">
             <span className="font-semibold text-2xl">Username:</span>
             <input
-              placeholder={user.username}
+              value={formData.username || user.username}
+              // placeholder={user.username}
               type="text"
               disabled={!isEditing}
               className={`text-2xl pl-4 rounded-md w-150 p-2 ${
@@ -43,12 +70,16 @@ function UserDashboard() {
                   ? "bg-gray-200 shadow-xs shadow-gray-700"
                   : "bg-white inset-shadow-sm/50"
               }`}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
             />
           </div>
           <div className="flex justify-between">
             <span className="font-semibold text-2xl">Email:</span>
             <input
-              placeholder={user.email}
+              value={formData.email || user.email}
+              // placeholder={user.email}
               type="text"
               disabled={!isEditing}
               className={`text-2xl pl-4 rounded-md w-150 p-2 ${
@@ -56,6 +87,9 @@ function UserDashboard() {
                   ? "bg-gray-200 shadow-xs shadow-gray-700"
                   : "bg-white inset-shadow-sm/50"
               }`}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
           </div>
           <div className="flex justify-between">
@@ -85,8 +119,7 @@ function UserDashboard() {
                 ? "bg-[#ff4a4a] text-white text-xl hover:bg-[#e40a1c] "
                 : "bg-[#F5FB87] hover:bg-[#f2ff02] text-xl"
             }`}
-            onClick={() => setIsEditing(!isEditing)}
-          >
+            onClick={handleToggleEdit}>
             {isEditing ? "Cancel" : "Edit"}
           </button>
           <button
@@ -96,9 +129,8 @@ function UserDashboard() {
                 : "bg-gray-200 text-xl shadow-xs shadow-black"
             }`}
             disabled={!isEditing}
-            onClick={testing}
-            type="submit"
-          >
+            onClick={handleSubmit}
+            type="submit">
             Submit
           </button>
         </div>

@@ -1,11 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import Spinner from "../components/Spinner";
 
-function PrivateRoute({ children, role }) {
+function PrivateRoute({ role }) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!user) {
@@ -26,7 +27,7 @@ function PrivateRoute({ children, role }) {
     );
   }
 
-  return children;
+  return <Outlet />;
 }
 
 export default PrivateRoute;

@@ -1,62 +1,102 @@
-import React from "react";
-import { FaCheck } from "react-icons/fa6";
-import { RxReset } from "react-icons/rx";
+import { useState } from "react";
+import { createUserApi } from "../api/admin";
+import toast from "react-hot-toast";
 
-const CreateUser = ({ isOpen, onClose }) => {
+function CreateUser({ isOpen, onClose, reloadUsers }) {
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "", // 🔑 tambahin password
+    role: "user",
+    status: "active",
+  });
+
   if (!isOpen) return null;
-  const handleOutsideClick = (e) => {
-    if (e.target.id === "modal-overlay") {
-      onClose(); // close modal kalau klik luar
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserApi(form);
+      toast.success("User created successfully");
+      reloadUsers();
+      onClose();
+      setForm({
+        username: "",
+        email: "",
+        password: "",
+        role: "user",
+        status: "active",
+      });
+    } catch (err) {
+      console.error("Create user failed:", err);
+      toast.error("Failed to create user");
     }
   };
 
   return (
-    <div
-      id="modal-overlay"
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-      onClick={handleOutsideClick}
-    >
-      {/* stopPropagation agar klik dalam modal tidak menutup */}
-      <div
-        className="bg-white p-6 rounded-2xl shadow-lg"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-2.5 w-[635px] h-[500px] text-center text-xl font-bold">
-          CREATE USER
-          <div className="p-2 text-left grid items-center gap-2">
-            Username
-            <input
-              placeholder="Enter Username..."
-              type="text"
-              className="bg-white p-3 font-extralight inset-shadow-sm/40 rounded-4xl w-full"
-            />
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 className="text-xl font-bold mb-4">Create User</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-3">
+          <input
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            placeholder="Username"
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            type="email"
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Password"
+            type="password"
+            className="p-2 border rounded"
+            required
+          />
+
+          <select
+            name="status"
+            value={form.status}
+            onChange={handleChange}
+            className="p-2 border rounded">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded bg-gray-300">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-blue-600 text-white">
+              Create
+            </button>
           </div>
-          <div className="p-2 text-left grid items-center gap-2">
-            Email
-            <input
-              placeholder="Enter Email..."
-              type="email"
-              className="bg-white p-3 inset-shadow-sm/40 rounded-4xl w-full font-extralight"
-            />
-          </div>
-        </div>
-        <div className="flex gap-2 pl-4">
-          <button
-            type="button"
-            className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-[#ff4a4a] hover:bg-[#ff4a4a]/80 text-white shadow-md rounded"
-          >
-            <RxReset /> Reset
-          </button>
-          <button
-            type="button"
-            className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-[#06D6A0] text-white hover:bg-[#06D6A0]/80 shadow-md rounded"
-          >
-            <FaCheck /> Submit
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   );
-};
+}
 
 export default CreateUser;

@@ -4,11 +4,13 @@ import AdminDashboard from "../pages/AdminDashboard";
 import UserDashboard from "../pages/UserDashboard";
 import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoutes";
+import NotFound from "../pages/NotFound";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* public routes */}
         <Route
           path="/"
           element={<Login />}
@@ -17,21 +19,27 @@ export default function AppRouter() {
           path="/signup"
           element={<Register />}
         />
+
+        {/* protected admin */}
+        <Route element={<PrivateRoute role="admin" />}>
+          <Route
+            path="/dashboard-admin"
+            element={<AdminDashboard />}
+          />
+        </Route>
+
+        {/* protected user */}
+        <Route element={<PrivateRoute role="user" />}>
+          <Route
+            path="/dashboard-user"
+            element={<UserDashboard />}
+          />
+        </Route>
+
+        {/* 404 */}
         <Route
-          path="/dashboard-admin"
-          element={
-            <PrivateRoute role="admin">
-              <AdminDashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/dashboard-user"
-          element={
-            <PrivateRoute role="user">
-              <UserDashboard />
-            </PrivateRoute>
-          }
+          path="*"
+          element={<NotFound />}
         />
       </Routes>
     </BrowserRouter>

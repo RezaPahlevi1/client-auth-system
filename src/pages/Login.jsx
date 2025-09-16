@@ -3,8 +3,8 @@ import CopyField from "../components/CopyField";
 import LoginForm from "../components/LoginForm";
 
 function Login() {
-  const [email] = useState("suga@mail.com");
-  const [password] = useState("suganteng");
+  const [email] = useState("admin@mail.com");
+  const [password] = useState("admin123");
 
   return (
     <div className="flex h-dvh overflow-hidden">

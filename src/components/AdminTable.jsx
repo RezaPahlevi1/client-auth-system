@@ -1,34 +1,19 @@
-// AdminTable.jsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdOutlineEdit, MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { fetchAllUsers } from "../api/auth";
-import Modaledit from "../components/Modaledit";
-import ConfirmDeleteModal from "../components/ModalDelete";
 
-function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+function AdminTable({
+  users,
+  currentPage,
+  totalPages,
+  onEdit,
+  onDelete,
+  onPageChange,
+}) {
   const itemsPerPage = 5;
-
-  // state untuk modal edit
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  // state untuk modal delete
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
-
-  const totalPages = Math.ceil(users.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentUsers = users.slice(startIndex, endIndex);
+  const currentUsers = users.slice(startIndex, startIndex + itemsPerPage);
   const emptyRows = itemsPerPage - currentUsers.length;
-
-  const goToPage = (page) => setCurrentPage(page);
-  const goToPrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
-  const goToNextPage = () =>
-    currentPage < totalPages && setCurrentPage(currentPage + 1);
 
   const getPageNumbers = () => {
     const pages = [];
@@ -48,67 +33,6 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
     if (endRange < totalPages - 1) pages.push("...");
     if (totalPages > 1) pages.push(totalPages);
     return pages;
-  };
-
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const data = await fetchAllUsers();
-
-        // 🔍 Filtering
-        let filtered = data.filter((u) => {
-          const matchSearch =
-            u.username.toLowerCase().includes(search.toLowerCase()) ||
-            u.email.toLowerCase().includes(search.toLowerCase());
-          const matchRole = roleFilter
-            ? u.role.toLowerCase() === roleFilter.toLowerCase()
-            : true;
-          const matchStatus = statusFilter
-            ? u.status.toLowerCase() === statusFilter.toLowerCase()
-            : true;
-
-          return matchSearch && matchRole && matchStatus;
-        });
-
-        // ↕️ Sorting
-        if (sortBy === "username") {
-          filtered = [...filtered].sort((a, b) =>
-            a.username.localeCompare(b.username)
-          );
-        } else if (sortBy === "role") {
-          filtered = [...filtered].sort((a, b) => a.role.localeCompare(b.role));
-        } else if (sortBy === "status") {
-          filtered = [...filtered].sort((a, b) =>
-            a.status.localeCompare(b.status)
-          );
-        }
-
-        setUsers(filtered);
-      } catch (error) {
-        console.error("Gagal ambil data users", error);
-      }
-    };
-    loadUsers();
-  }, [search, sortBy, roleFilter, statusFilter]);
-
-  const handleEditClick = (user) => {
-    setSelectedUser(user);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedUser(null);
-  };
-
-  const handleDeleteClick = (user) => {
-    setUserToDelete(user);
-    setIsDeleteOpen(true);
-  };
-
-  const handleCloseDelete = () => {
-    setIsDeleteOpen(false);
-    setUserToDelete(null);
   };
 
   return (
@@ -135,7 +59,9 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {currentUsers.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
+              <tr
+                key={user.id}
+                className="hover:bg-gray-50">
                 <td className="px-6 py-4 h-16 text-sm font-medium text-gray-900">
                   {user.username}
                 </td>
@@ -148,8 +74,7 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
                       user.role.toLowerCase() === "admin"
                         ? "bg-[#3b82f6] text-white"
                         : "bg-[#f4a261] text-white"
-                    }`}
-                  >
+                    }`}>
                     {user.role}
                   </div>
                 </td>
@@ -159,22 +84,19 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
                       user.status.toLowerCase() === "active"
                         ? "bg-[#06D6A0] text-white"
                         : "bg-[#e63946] text-white"
-                    }`}
-                  >
+                    }`}>
                     {user.status}
                   </div>
                 </td>
                 <td className="px-6 py-4 h-16 flex gap-2 justify-center">
                   <button
-                    onClick={() => handleEditClick(user)}
-                    className="p-2 bg-yellow-200 cursor-pointer hover:bg-yellow-400 rounded transition-colors"
-                  >
+                    onClick={() => onEdit(user)}
+                    className="p-2 bg-yellow-200 cursor-pointer hover:bg-yellow-400 rounded transition-colors">
                     <MdOutlineEdit />
                   </button>
                   <button
-                    onClick={() => handleDeleteClick(user)}
-                    className="p-2 bg-red-400 cursor-pointer hover:bg-red-600 text-white rounded transition-colors"
-                  >
+                    onClick={() => onDelete(user)}
+                    className="p-2 bg-red-400 cursor-pointer hover:bg-red-600 text-white rounded transition-colors">
                     <FaTrashAlt />
                   </button>
                 </td>
@@ -182,8 +104,12 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
             ))}
 
             {[...Array(emptyRows)].map((_, i) => (
-              <tr key={`empty-${i}`} className="hover:bg-gray-50">
-                <td colSpan={5} className="px-6 py-4 h-16"></td>
+              <tr
+                key={`empty-${i}`}
+                className="hover:bg-gray-50">
+                <td
+                  colSpan={5}
+                  className="px-6 py-4 h-16"></td>
               </tr>
             ))}
           </tbody>
@@ -194,13 +120,11 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
       <div className="flex items-center justify-center px-4 py-3 bg-gray-100 border-t border-gray-200">
         <nav
           className="relative z-0 inline-flex items-center space-x-2"
-          aria-label="Pagination"
-        >
+          aria-label="Pagination">
           <button
-            onClick={goToPrevPage}
+            onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
+            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed">
             <MdChevronLeft className="h-5 w-5" />
           </button>
           {getPageNumbers().map((page, index) => (
@@ -209,41 +133,25 @@ function AdminTable({ search, sortBy, roleFilter, statusFilter }) {
                 <span className="px-2 text-gray-500">...</span>
               ) : (
                 <button
-                  onClick={() => goToPage(page)}
+                  onClick={() => onPageChange(page)}
                   className={`px-2 text-sm font-medium ${
                     currentPage === page
                       ? "text-black font-bold"
                       : "text-gray-500 hover:text-black"
-                  }`}
-                >
+                  }`}>
                   {page}
                 </button>
               )}
             </React.Fragment>
           ))}
           <button
-            onClick={goToNextPage}
+            onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
+            className="p-2 text-gray-600 hover:text-black disabled:text-gray-400 disabled:cursor-not-allowed">
             <MdChevronRight className="h-5 w-5" />
           </button>
         </nav>
       </div>
-
-      {/* Modal edit */}
-      <Modaledit
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        user={selectedUser}
-      />
-
-      {/* Modal delete */}
-      <ConfirmDeleteModal
-        isOpen={isDeleteOpen}
-        onClose={handleCloseDelete}
-        user={userToDelete}
-      />
     </div>
   );
 }
